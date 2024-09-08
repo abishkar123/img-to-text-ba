@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors())
 
-// MongoDB connection string (replace with your actual MongoDB Atlas connection string)
+
 const mongoURI = process.env.MONGO_URI || 'your_mongodb_atlas_connection_string';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected successfully'))
@@ -29,6 +29,7 @@ const Image = mongoose.model('Image', imageSchema);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -49,8 +50,7 @@ app.post('/api/v1/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-// @route POST /api/v1/gemini
-// @desc Send message and image to Google Generative AI
+
 app.post('/api/v1/gemini', async (req, res) => {
   try {
     const { message, imageId } = req.body;
@@ -89,6 +89,6 @@ app.post('/api/v1/gemini', async (req, res) => {
   }
 });
 
-// Start server
+
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
